@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/mRoot"
+    tools:context="com.glowingsoft.ihelp.LoginActivity">
+
+    <ImageView
+        android:src="@drawable/logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="150dp"
+        android:layout_height="100dp" />
+    <EditText
+        android:id="@+id/email"
+        android:hint="Email"
+        android:textColor="@color/white"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/password"
+        android:inputType="numberPassword"
+        android:textColor="@color/white"
+        android:hint="Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:textColor="@color/white"
+        android:text="Forgot Password ?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/mPb"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/loginBtn"
+        android:text="Login"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/signupBtn"
+        android:text="Signup"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
