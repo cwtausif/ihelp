@@ -57,7 +57,11 @@ public class LoginActivity extends MainActivity implements View.OnClickListener 
                 } else {
                     email = editTextEmail.getText().toString();
                     password = editTextPassword.getText().toString();
-                    loginRequest();
+                    if (isConnected()) {
+                        loginRequest();
+                    }else {
+                        networkConnectionFailed();
+                    }
                 }
                 break;
         }

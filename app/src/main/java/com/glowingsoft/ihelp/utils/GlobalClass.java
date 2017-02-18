@@ -11,11 +11,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import java.net.UnknownHostException;
 
@@ -23,7 +20,7 @@ import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
 
 public class GlobalClass extends Application implements Application.ActivityLifecycleCallbacks {
 
-    public String BASE_URL = "http://132.155.22.101/ihelp/";
+    public String BASE_URL = "http://192.168.2.106/ihelp/";
     private static GlobalClass singleton;
     boolean applicationOnPause = false;
 
@@ -39,13 +36,13 @@ public class GlobalClass extends Application implements Application.ActivityLife
         registerActivityLifecycleCallbacks(this);
     }
     public void snakbar(View mView, String Message, int mTextCol, int mBgCol) {
-        Snackbar mSnackbar;
-        mSnackbar = Snackbar.make(mView, Message, Snackbar.LENGTH_LONG);// Sn
-        mView = mSnackbar.getView();
-        mView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), mBgCol));
-        TextView tv = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
-        tv.setTextColor(ContextCompat.getColor(getApplicationContext(), mTextCol));
-        mSnackbar.show();
+//        Snackbar mSnackbar;
+//        mSnackbar = Snackbar.make(mView, Message, Snackbar.LENGTH_LONG);// Sn
+//        mView = mSnackbar.getView();
+//        mView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), mBgCol));
+//        TextView tv = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+//        tv.setTextColor(ContextCompat.getColor(getApplicationContext(), mTextCol));
+//        mSnackbar.show();
     }
 
     public static boolean isOnline(Context context) {
