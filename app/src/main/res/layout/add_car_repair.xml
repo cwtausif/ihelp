@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.glowingsoft.ihelp.AddCarRepair">
+    <EditText
+        android:layout_margin="20dp"
+        android:hint="Car Repair Name"
+        android:textSize="25dp"
+        android:inputType="text"
+        android:id="@+id/carReapirName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="Location"
+        android:textSize="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="Location"
+        android:layout_margin="20dp"
+        android:background="@drawable/rectangle"
+        android:id="@+id/textView_location"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:textColor="@color/blue" />
+
+    <TextView
+        android:id="@+id/textView_post"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="Post"
+        android:padding="5dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_go"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/size22" />
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/mPb"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

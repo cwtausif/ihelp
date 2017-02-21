@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //region Variables
     TextView forgotPass;
     protected GoogleMap googleMap,googleMapRepair;
-    EditText editTextEmail, editTextPassword,editTextName,carReapirNameEt;
-    String carReapirName;
+    EditText editTextEmail, editTextPassword,editTextName,carReapirNameEt,carDriverNameEt,driverEmailEt,driverCityEt;
+    String carReapirName,mcity;
     public static final int WEBVIEW_REQUEST_CODE = 100;
     protected boolean mReqFlag = true;
-    Button loginBtnJoin,signupBtn,addCarRepair;
+    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver;
     Intent intent;
     Context mContext;
     static public String lengthShort = "short";
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textViewHome,textViewTaxi,textViewRepairCar;
     ArrayList<TutorCategoriesModel> arrayListTutorCategories;
     Spinner spinnerTutorCategories;
-    ArrayList<UsersModel> tutorsData,allCarsData;
+    ArrayList<UsersModel> tutorsData,allCarsData,allDriversData;
     UsersModel usersModel;
     ListView listViewTutors;
     TutorsAdapter tutorsAdapter;
@@ -241,6 +241,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     //endregion
 
+    protected void addCarDriverRequest(){
+
+        RequestParams mParams = new RequestParams();
+        mParams.add("name",carRepairName);
+        mParams.add("email",name);
+        mParams.add("city",mcity);
+        mHashMap = new HashMap<>();
+        mHashMap.put("location",address);
+        mHashMap.put("latitude", lattitude);
+        mHashMap.put("longitude", longitude);
+        mHashMap.put("formatted_address", address+", "+city+" "+country);
+        mHashMap.put("country", country);
+        mHashMap.put("city",city);
+        mHashMap.put("address", address);
+        mParams.put("location", mHashMap);
+
+        //Params while social signup
+        Log.d(TAG,"response"+mParams.toString());
+        requestType = 6;
+        Log.d("response apikey",retrivePreferencesValues("apiKey"));
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.post(mContext, "addcardriver", mParams, new MyTextHttpResponseHandler());
+    }
+
     protected void addCarRepairRequest(){
         RequestParams mParams = new RequestParams();
         mParams.add("name",carRepairName);
@@ -269,6 +293,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.get(mContext, "allcarrepair", mParams, new MyTextHttpResponseHandler());
     }
+    private void allCarDriverReq() {
+        Log.d("response","allCarDriverReq()");
+        RequestParams mParams = new RequestParams();
+        requestType = 7;
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.get(mContext, "allcardrivers", mParams, new MyTextHttpResponseHandler());
+    }
+
 
 
     @Override
@@ -299,6 +331,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(mContext,AddCarRepair.class);
                     startActivity(intent);
                 break;
+            case R.id.add_car_driver:
+                Intent inte = new Intent(mContext,AddCarDriver.class);
+                startActivity(inte);
+                break;
             case R.id.textView_home:
                 //showToast("home","short");
                 homeLayout.setVisibility(View.VISIBLE);
@@ -318,10 +354,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 break;
             case R.id.textView_my_taxi:
-                showToast("home","short");
+                //showToast("home","short");
                 taxiLayout.setVisibility(View.VISIBLE);
                 textViewTaxi.setBackgroundColor(Color.parseColor("#2ca5d2"));
                 textViewTaxi.setTextColor(Color.parseColor("#ffffff"));
+                if (allDriversData.size()==0) {
+                    allCarDriverReq();
+                }
                 break;
         }
     }
@@ -378,7 +417,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                           case 5:
                               allCarRepairResponse(mResponse);
                               break;
-
+                          case 6:
+                              addCarDriverResponse(mResponse);
+                              break;
+                          case 7:
+                              allCarDrivresResponse(mResponse);
+                              break;
                       }
             } else {
                 showToast(mResponse.getString("message"),"short");
@@ -419,6 +463,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
+    private void allCarDrivresResponse(JSONObject mResponse) {
+        displayLog("response all car drivers please work   ", mResponse.toString());
+        try {
+            boolean error = mResponse.getBoolean("error");
+            if (!error) {
+                JSONArray jsonArrayUsers = mResponse.getJSONArray("cardrivers");
+                if (jsonArrayUsers != null && jsonArrayUsers.length() != 0) {
+                    for (int i = 0; i < jsonArrayUsers.length(); i++) {
+                        double lat = jsonArrayUsers.getJSONObject(i).getDouble("latitude");
+                        double longi  = jsonArrayUsers.getJSONObject(i).getDouble("longitude");
+                        Log.d("response","lat,long"+lat+","+longi);
+                        LatLng latLng = new LatLng(lat,longi);
+                        googleMapRepair.addMarker(new MarkerOptions().position(latLng).title(jsonArrayUsers.getJSONObject(i).getString("name")));
+                        if (i==0){
+                            googleMapRepair.clear();
+                            googleMapRepair.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        }
+                        usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
+                        usersModel.toString();
+                        allDriversData.add(usersModel);
+                    }
+                    tutorsAdapter.notifyDataSetChanged();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void addCarRepairResponse(JSONObject mResponse) {
         Log.d("response ","work in in addCarRepairRespones method"+mResponse.toString());
@@ -430,6 +502,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(mContext,HomeScreen.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("tab",2);
+        startActivity(intent);
+        finish();
+    }
+    private void addCarDriverResponse(JSONObject mResponse) {
+        Log.d("response ","work in in addCarDriverResponse method"+mResponse.toString());
+        try {
+            showToast(mResponse.getString("message"),"short");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(mContext,HomeScreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("tab",3);
         startActivity(intent);
         finish();
     }
@@ -486,7 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
                         if (i==0){
                             googleMap.clear();
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
                         }
                         usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
                         usersModel.toString();

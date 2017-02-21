@@ -47,6 +47,7 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         //care repair section
         carRepairLayout = (LinearLayout) findViewById(R.id.car_repair_layout);
         addCarRepair = (Button) findViewById(R.id.add_car_repair);
+        addCarDriver = (Button) findViewById(R.id.add_car_driver);
         homeLayout = (LinearLayout) findViewById(R.id.layout_home);
         mContext = HomeScreen.this;
         showLog("ApiKey", retrivePreferencesValues("apiKey") + "");
@@ -54,6 +55,7 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         arrayListUsers = new ArrayList<>();
         tutorsData = new ArrayList<>();
         allCarsData = new ArrayList<>();
+        allDriversData = new ArrayList<>();
         listViewTutors = (ListView) findViewById(R.id.listView_tutors);
         tutorsAdapter = new TutorsAdapter(mContext, tutorsData);
         listViewTutors.setAdapter(tutorsAdapter);
@@ -80,7 +82,6 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         textViewTaxi.setOnClickListener(this);
         //  listViewActivities.setOnItemClickListener(this);
         //imageViewCreateActivity.setOnClickListener(this);
-        spinnerTutorCategories.setOnItemSelectedListener(this);
         imageViewHideTop.setOnClickListener(this);
 //        imageViewSetting.setOnClickListener(this);
         imageViewHideBottom.setOnClickListener(this);
@@ -90,10 +91,26 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         //textViewActivities.setOnClickListener(this);
 
         addCarRepair.setOnClickListener(this);
+        addCarDriver.setOnClickListener(this);
 
         //endregion
 
 
+        //region SpinnerListener
+        spinnerTutorCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(HomeScreen.this,""+position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //endregion
 
         //endregion
 
@@ -212,7 +229,14 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
                     networkConnectionFailed();
                 }
                 return;
+            }else if (getIntent().getExtras().getInt("tab") == 3) {
+                if (isConnected()) {
+                    textViewTaxi.performClick();
+                } else {
+                    networkConnectionFailed();
+                }
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }

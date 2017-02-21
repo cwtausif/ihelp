@@ -20,7 +20,7 @@ import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
 
 public class GlobalClass extends Application implements Application.ActivityLifecycleCallbacks {
 
-    public String BASE_URL = "http://192.168.2.106/ihelp/";
+    public String BASE_URL = "http://glowingsoft.com/ihelp/";
     private static GlobalClass singleton;
     boolean applicationOnPause = false;
 
@@ -111,7 +111,6 @@ public class GlobalClass extends Application implements Application.ActivityLife
         }
         return mResult;
     }
-
 
     @Override
     public void onActivityCreated(Activity arg0, Bundle arg1) {

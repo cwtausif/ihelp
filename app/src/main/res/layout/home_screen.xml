@@ -42,6 +42,7 @@
                     android:background="@drawable/shape_dropdown_blue_bg"
                     android:padding="5dp"
                     android:layout_weight="0.5"
+
                     android:spinnerMode="dropdown" />
                 <ProgressBar
                     android:id="@+id/mPb"
@@ -130,7 +131,8 @@
 
     <!-- User Profile Layout-->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/layout_me"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -303,6 +305,47 @@
         android:orientation="vertical"
         android:visibility="gone"></LinearLayout>
 
+    <!-- layout Car Repair -->
+    <LinearLayout
+        android:id="@+id/car_repair_layout"
+        android:orientation="vertical"
+        android:weightSum="0.9"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.915">
+        <Button
+            android:id="@+id/add_car_repair"
+            android:text="Add Car Repair"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/car_repair_map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/taxi_layout"
+        android:orientation="vertical"
+        android:weightSum="0.9"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.915">
+        <Button
+            android:id="@+id/add_car_driver"
+            android:text="Add Car Driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/taxi_map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -359,6 +402,7 @@
             android:text="Me"
             android:textColor="#454545" />
     </LinearLayout>
+
 
 
 </LinearLayout>

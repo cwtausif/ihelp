@@ -29,17 +29,19 @@ import java.util.Locale;
 
 import glowingsoft.com.ihelp.R;
 
-public class AddCarRepair extends MainActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class AddCarDriver extends MainActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.add_car_repair);
-
-        mContext = AddCarRepair.this;
-
-        carReapirNameEt = (EditText) findViewById(R.id.carReapirName);
+        setContentView(R.layout.add_driver);
+        mContext = AddCarDriver.this;
+        carDriverNameEt = (EditText) findViewById(R.id.driverNameEt);
+        driverEmailEt = (EditText) findViewById(R.id.driverEmailEt);
+        driverCityEt = (EditText) findViewById(R.id.driverCityEt);
         textViewLocation = (TextView) findViewById(R.id.textView_location);
         textViewPost = (TextView) findViewById(R.id.textView_post);
         mPb = (ProgressBar) findViewById(R.id.mPb);
@@ -70,20 +72,28 @@ public class AddCarRepair extends MainActivity implements View.OnClickListener, 
                     location[5] = city;
                     location[6] = streetAddress;
                 }
-                carRepairName = carReapirNameEt.getText().toString();
-                if (carRepairName.length() ==0){
-                    showToast("please enter valid car repair name","short");
-                    return;
+                name = carDriverNameEt.getText().toString();
+                if (name.length() ==0){
+                    showToast("please enter valid car driver name","short");
+                    break;
+                } else if (driverEmailEt.length()==0 || emailValidator(driverEmailEt.getText().toString())==false){
+                    showToast("please enter valid email","short");
+                    break;
+                } else if (driverCityEt.length()==0){
+                    showToast("please enter city","short");
+                    break;
                 }
+               email = driverEmailEt.getText().toString();
+               mcity = driverCityEt.getText().toString();
 
                 if (isConnected()) {
-                    // new ActivityCreate().execute();
-                    Log.d("response","lat: "+lattitude+" long: "+longitude+" title: "+carReapirName);
-                    addCarRepairRequest();
+                    Log.d("response","lat: "+lattitude+" long: "+longitude+" name: "+name+" email: "+email+" mcity: "+mcity);
+                    addCarDriverRequest();
 
                 } else {
                     networkConnectionFailed();
                 }
+
                 break;
             case R.id.textView_location:
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
