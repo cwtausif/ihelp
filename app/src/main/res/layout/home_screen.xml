@@ -131,168 +131,7 @@
 
     <!-- User Profile Layout-->
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/layout_me"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.915"
-        android:background="#eaf7fd"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:weightSum="0.9"
-        tools:context="com.stardevelopers.bananaapp.UserProfile">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:background="#2ca5d2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="My Profile"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/size22" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.35"
-            android:gravity="bottom|center"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:gravity="bottom"
-                android:weightSum="1">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.15"></View>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView_setting"
-                    android:src="@drawable/setting" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/imageView_user_image"
-                    android:layout_width="220dp"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.08">
-
-            <TextView
-                android:id="@+id/textView_username"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="#3c494f"
-                android:textSize="@dimen/size22" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.06"
-            android:weightSum="1">
-
-            <TextView
-                android:id="@+id/textView_user_age"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.495"
-                android:gravity="right"
-                android:padding="10dp"
-                android:textColor="#3c494f" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.005"
-                android:background="#2ca5d2"></View>
-
-            <TextView
-                android:id="@+id/textView_user_gender"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.495"
-                android:gravity="left"
-                android:padding="10dp"
-                android:textColor="#3c494f" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07">
-
-            <TextView
-                android:id="@+id/textView_description"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="#3c494f" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.07">
-
-            <TextView
-                android:id="@+id/textView_user_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="#2ca5d2"
-                android:textSize="@dimen/size18" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.08"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/textView_edit_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#2ca5d2"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Edit profile"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/size18" />
-        </LinearLayout>
-
-    </LinearLayout>
 
 
     <!-- layout Connect-->
@@ -325,6 +164,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/accessories_layout"
+        android:orientation="vertical"
+        android:weightSum="0.9"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.915">
+        <Button
+            android:id="@+id/add_accessories"
+            android:text="Add Accessory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/accessories_map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/taxi_layout"
@@ -341,6 +199,43 @@
             android:layout_height="wrap_content" />
         <fragment
             android:id="@+id/taxi_map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_me"
+        android:orientation="vertical"
+        android:weightSum="0.9"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.915">
+        <RelativeLayout
+            android:background="@color/error"
+            android:layout_width="match_parent"
+            android:layout_height="300sp">
+            <ImageView
+                android:id="@+id/me_profile_image"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="@drawable/images"
+                android:layout_width="150sp"
+                android:layout_height="150sp" />
+            <TextView
+                android:id="@+id/me_name_textview"
+                android:textSize="35sp"
+                android:layout_below="@+id/me_profile_image"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:text="Name"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <fragment
+            android:id="@+id/me_map"
             android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -384,7 +279,7 @@
             android:textColor="#454545" />
 
         <TextView
-            android:id="@+id/textView_phone"
+            android:id="@+id/textView_accessories"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.22"

@@ -56,12 +56,13 @@ import glowingsoft.com.ihelp.R;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //region Variables
     TextView forgotPass;
-    protected GoogleMap googleMap,googleMapRepair;
+    String[] accessoryTypeService = new String[]{"Laptop/Pc","Mobile Phones"};
+    protected GoogleMap googleMap,googleMapRepair,googleMapDriverTaxi,googleMapAccessoryRepairer;
     EditText editTextEmail, editTextPassword,editTextName,carReapirNameEt,carDriverNameEt,driverEmailEt,driverCityEt;
     String carReapirName,mcity;
     public static final int WEBVIEW_REQUEST_CODE = 100;
     protected boolean mReqFlag = true;
-    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver;
+    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory;
     Intent intent;
     Context mContext;
     static public String lengthShort = "short";
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String signupType ="normal",social_id="";
     protected HashMap<String, String> mHashMap;
     SharedPreferences mPref;
+    ArrayAdapter<String> accessoryTypeSpinnerAdapter;
     SharedPreferences.Editor mPrefEditor;
     public static final String mPrefName = "ihelpData";
     private String TAG = "MainActivity";
@@ -77,23 +79,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout mRoot;
     protected  String name, age, note, email, password;
     String avatar, apiKey, user_id,checkStatusLogin;
-    int requestType;
+    int requestType,accessoryType=0;
     LocationManager manager;
     int requestGpsEnabled = 3;
-    TextView textViewHome,textViewTaxi,textViewRepairCar;
+    LinearLayout layoutMap, layoutHome;
+    TextView textViewHome,textViewTaxi,textViewRepairCar,textViewAccessories,textViewMe;
     ArrayList<TutorCategoriesModel> arrayListTutorCategories;
-    Spinner spinnerTutorCategories;
-    ArrayList<UsersModel> tutorsData,allCarsData,allDriversData;
+    Spinner spinnerTutorCategories,accessoryTypeSpinner;
+    ArrayList<UsersModel> tutorsData,allCarsData,allDriversData,allaccessoryRepairs;
     UsersModel usersModel;
     ListView listViewTutors;
     TutorsAdapter tutorsAdapter;
     boolean firstRequst = true;
-    LinearLayout carRepairLayout,homeLayout,taxiLayout;
+    LinearLayout carRepairLayout,homeLayout,taxiLayout,accessoriesLayout, layoutMe;
     public static TextView textViewDate, textViewTime, textViewPost;
     static String time;
     public static Calendar cal;
-    Spinner spinnerSports, spinnerOpponentTeam, spinnerNumbers, spinnerAgeFirst, spinnerAgeEnd, spinnerSkillsPrefrence, spinnerGender;
-    GoogleApiClient mGoogleApiClient;
+     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     String lattitude, longitude;
     TextView textViewLocation;
@@ -121,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
     }
+
 
     public boolean emailValidator(String email) {
         Pattern pattern;
@@ -155,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
     public void showToast(final String message, final String length) {
         runOnUiThread(new Runnable() {
             public void run() {
@@ -167,13 +168,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-
     public String retrivePreferencesValues(String key) {
         mPref = getSharedPreferences(mPrefName, Context.MODE_PRIVATE);
         String storeValue = mPref.getString(key, "");
         return storeValue;
     }
-
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -196,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.commit();
     }
     //endregion
-
     //region Requests
     protected void loginRequest() {
         RequestParams mParams = new RequestParams();
@@ -239,13 +237,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showToast("Request Already In Progress","short");
         }
     }
-    //endregion
-
     protected void addCarDriverRequest(){
 
         RequestParams mParams = new RequestParams();
-        mParams.add("name",carRepairName);
-        mParams.add("email",name);
+        mParams.add("name",name);
+        mParams.add("email",email);
         mParams.add("city",mcity);
         mHashMap = new HashMap<>();
         mHashMap.put("location",address);
@@ -264,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.post(mContext, "addcardriver", mParams, new MyTextHttpResponseHandler());
     }
-
     protected void addCarRepairRequest(){
         RequestParams mParams = new RequestParams();
         mParams.add("name",carRepairName);
@@ -285,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.post(mContext, "addcarrepair", mParams, new MyTextHttpResponseHandler());
     }
-
     private void allCarRepairReq() {
         Log.d("response","allCarRepairReq()");
         RequestParams mParams = new RequestParams();
@@ -300,25 +294,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.get(mContext, "allcardrivers", mParams, new MyTextHttpResponseHandler());
     }
+    protected void addAccessoryRequest(){
 
+        RequestParams mParams = new RequestParams();
+        mParams.add("name",name);
+        mParams.add("accessoryType",accessoryType+"");
+        mParams.add("city",mcity);
+        mHashMap = new HashMap<>();
+        mHashMap.put("location",address);
+        mHashMap.put("latitude", lattitude);
+        mHashMap.put("longitude", longitude);
+        mHashMap.put("formatted_address", address+", "+city+" "+country);
+        mHashMap.put("country", country);
+        mHashMap.put("city",city);
+        mHashMap.put("address", address);
+        mParams.put("location", mHashMap);
 
-
+        //Params while social signup
+        Log.d(TAG,"response"+mParams.toString());
+        requestType = 8;
+        Log.d("response apikey",retrivePreferencesValues("apiKey"));
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.post(mContext, "addaccessory", mParams, new MyTextHttpResponseHandler());
+    }
+    private void allAccessoryRepairsReq() {
+        Log.d("response","allAccessoryRepairsReq()");
+        RequestParams mParams = new RequestParams();
+        requestType = 9;
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.get(mContext, "allaccessoryrepairs", mParams, new MyTextHttpResponseHandler());
+    }
+    //endregion
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id != R.id.add_car_repair) {
+
+        if (id != R.id.add_car_repair && id !=R.id.add_car_driver && id != R.id.add_accessories) {
             if (isConnected()) {
                 homeLayout.setVisibility(View.GONE);
                 carRepairLayout.setVisibility(View.GONE);
                 taxiLayout.setVisibility(View.GONE);
+                accessoriesLayout.setVisibility(View.GONE);
+                layoutMe.setVisibility(View.GONE);
+
 
                 textViewHome.setBackgroundColor(Color.parseColor("#ebe9ea"));
                 textViewRepairCar.setBackgroundColor(Color.parseColor("#ebe9ea"));
                 textViewTaxi.setBackgroundColor(Color.parseColor("#ebe9ea"));
+                textViewAccessories.setBackgroundColor(Color.parseColor("#ebe9ea"));
+                textViewMe.setBackgroundColor(Color.parseColor("#ebe9ea"));
+
+
 
                 textViewRepairCar.setTextColor(Color.parseColor("#454545"));
                 textViewHome.setTextColor(Color.parseColor("#454545"));
                 textViewTaxi.setTextColor(Color.parseColor("#454545"));
+                textViewAccessories.setTextColor(Color.parseColor("#454545"));
+                textViewMe.setTextColor(Color.parseColor("#454545"));
+
             } else {
                 networkConnectionFailed();
                 return;
@@ -326,6 +359,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         switch (id){
+            case R.id.add_accessories:
+                Intent accessoryIntent = new Intent(mContext,AddAccessory.class);
+                startActivity(accessoryIntent);
+                break;
             case R.id.add_car_repair:
                     //showToast("Add New Car Repair","short");
                     Intent intent = new Intent(mContext,AddCarRepair.class);
@@ -354,7 +391,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 break;
             case R.id.textView_my_taxi:
-                //showToast("home","short");
                 taxiLayout.setVisibility(View.VISIBLE);
                 textViewTaxi.setBackgroundColor(Color.parseColor("#2ca5d2"));
                 textViewTaxi.setTextColor(Color.parseColor("#ffffff"));
@@ -362,11 +398,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     allCarDriverReq();
                 }
                 break;
+            case R.id.textView_accessories:
+                accessoriesLayout.setVisibility(View.VISIBLE);
+                textViewAccessories.setBackgroundColor(Color.parseColor("#2ca5d2"));
+                textViewAccessories.setTextColor(Color.parseColor("#ffffff"));
+                if (allaccessoryRepairs.size()==0) {
+                    allAccessoryRepairsReq();
+                }
+                break;
+            case R.id.textView_me:
+                layoutMe.setVisibility(View.VISIBLE);
+                textViewMe.setBackgroundColor(Color.parseColor("#2ca5d2"));
+                textViewMe.setTextColor(Color.parseColor("#ffffff"));
+                break;
+
         }
     }
-
-
-
     class MyTextHttpResponseHandler extends JsonHttpResponseHandler {
         MyTextHttpResponseHandler() {
         }
@@ -423,6 +470,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                           case 7:
                               allCarDrivresResponse(mResponse);
                               break;
+                          case 8:
+                              addAccessoryResponse(mResponse);
+                          case 9:
+                              allAccessoryRepairsResponse(mResponse);
+                              break;
                       }
             } else {
                 showToast(mResponse.getString("message"),"short");
@@ -435,6 +487,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void addAccessoryResponse(JSONObject mResponse) {
+        Log.d("response ","work in in addAccessoryResponse method"+mResponse.toString());
+        try {
+            showToast(mResponse.getString("message"),"short");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(mContext,HomeScreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("tab",4);
+        startActivity(intent);
+        finish();
+    }
     private void allCarRepairResponse(JSONObject mResponse) {
         displayLog("response all car repairs please work   ", mResponse.toString());
         try {
@@ -447,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         double longi  = jsonArrayUsers.getJSONObject(i).getDouble("longitude");
                         Log.d("response","lat,long"+lat+","+longi);
                         LatLng latLng = new LatLng(lat,longi);
-                        googleMapRepair.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                        googleMapRepair.addMarker(new MarkerOptions().position(latLng).title(jsonArrayUsers.getJSONObject(i).getString("name")));
                         if (i==0){
                             googleMapRepair.clear();
                             googleMapRepair.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -475,10 +540,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         double longi  = jsonArrayUsers.getJSONObject(i).getDouble("longitude");
                         Log.d("response","lat,long"+lat+","+longi);
                         LatLng latLng = new LatLng(lat,longi);
-                        googleMapRepair.addMarker(new MarkerOptions().position(latLng).title(jsonArrayUsers.getJSONObject(i).getString("name")));
+                        googleMapDriverTaxi.addMarker(new MarkerOptions().position(latLng).title(jsonArrayUsers.getJSONObject(i).getString("name")));
                         if (i==0){
-                            googleMapRepair.clear();
-                            googleMapRepair.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                            googleMapDriverTaxi.clear();
+                            googleMapDriverTaxi.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         }
                         usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
                         usersModel.toString();
@@ -491,9 +556,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
-
     private void addCarRepairResponse(JSONObject mResponse) {
-        Log.d("response ","work in in addCarRepairRespones method"+mResponse.toString());
+        Log.d("response ","addCarRepairRespones method"+mResponse.toString());
         try {
             showToast(mResponse.getString("message"),"short");
         } catch (JSONException e) {
@@ -518,7 +582,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
         finish();
     }
-
     private void loginOrSignup(JSONObject mResponse) {
         try {
             Log.d("response", mResponse.toString() + "");
@@ -543,7 +606,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
-
     private void tutorCategoriesResponse(JSONObject mResponse) {
         displayLog("response Tutor Categories & Tutors", mResponse.toString());
         try {
@@ -568,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                        double longi  = jsonArrayUsers.getJSONObject(i).getDouble("longitude");
                         Log.d("response","lat,long"+lat+","+longi);
                         LatLng latLng = new LatLng(lat,longi);
-                        googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                        googleMap.addMarker(new MarkerOptions().position(latLng).title(jsonArrayUsers.getJSONObject(i).getString("name")));
                         if (i==0){
                             googleMap.clear();
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
@@ -590,7 +652,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
-
     protected void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Your GPS seems to be disabled, please enable it?")
@@ -602,5 +663,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+    private void allAccessoryRepairsResponse(JSONObject mResponse) {
+        displayLog("response allAccessoryRepairsResponse   ", mResponse.toString());
+
+        try {
+            boolean error = mResponse.getBoolean("error");
+            if (!error) {
+                JSONArray jsonArrayUsers = mResponse.getJSONArray("accessoryrepairs");
+                if (jsonArrayUsers != null && jsonArrayUsers.length() != 0) {
+                    for (int i = 0; i < jsonArrayUsers.length(); i++) {
+                        double lat = jsonArrayUsers.getJSONObject(i).getDouble("latitude");
+                        double longi  = jsonArrayUsers.getJSONObject(i).getDouble("longitude");
+                        Log.d("response","lat,long"+lat+","+longi);
+                        LatLng latLng = new LatLng(lat,longi);
+                        googleMapAccessoryRepairer.addMarker(new MarkerOptions().position(latLng).title(jsonArrayUsers.getJSONObject(i).getString("name")));
+                        if (i==0){
+                            googleMapAccessoryRepairer.clear();
+                            googleMapAccessoryRepairer.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        }
+                        usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
+                        usersModel.toString();
+                        allaccessoryRepairs.add(usersModel);
+                    }
+                    tutorsAdapter.notifyDataSetChanged();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

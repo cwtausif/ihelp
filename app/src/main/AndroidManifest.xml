@@ -52,6 +52,8 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name="com.glowingsoft.ihelp.AddCarDriver"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.glowingsoft.ihelp.AddAccessory"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

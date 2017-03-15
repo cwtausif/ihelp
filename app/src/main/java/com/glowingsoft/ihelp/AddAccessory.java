@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +32,7 @@ import java.util.Locale;
 
 import glowingsoft.com.ihelp.R;
 
-public class AddCarDriver extends MainActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class AddAccessory extends MainActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
 
@@ -37,16 +40,31 @@ public class AddCarDriver extends MainActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.add_driver);
-        mContext = AddCarDriver.this;
+        setContentView(R.layout.add_accessory);
+        mContext = AddAccessory.this;
         carDriverNameEt = (EditText) findViewById(R.id.driverNameEt);
-        driverEmailEt = (EditText) findViewById(R.id.driverEmailEt);
         driverCityEt = (EditText) findViewById(R.id.driverCityEt);
         textViewLocation = (TextView) findViewById(R.id.textView_location);
         textViewPost = (TextView) findViewById(R.id.textView_post);
+        accessoryTypeSpinner = (Spinner) findViewById(R.id.accessoryType_spinner);
         mPb = (ProgressBar) findViewById(R.id.mPb);
         textViewLocation.setOnClickListener(this);
         textViewPost.setOnClickListener(this);
+
+        accessoryTypeSpinnerAdapter = new ArrayAdapter<>(mContext,android.R.layout.simple_spinner_item,accessoryTypeService);
+        accessoryTypeSpinner.setAdapter(accessoryTypeSpinnerAdapter);
+        accessoryTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                accessoryType = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         //region google get lattitude and longitude
 
@@ -74,21 +92,17 @@ public class AddCarDriver extends MainActivity implements View.OnClickListener, 
                 }
                 name = carDriverNameEt.getText().toString();
                 if (name.length() ==0){
-                    showToast("please enter valid car driver name","short");
+                    showToast("please enter valid name","short");
                     break;
-                } else if (driverEmailEt.length()==0 || emailValidator(driverEmailEt.getText().toString())==false){
-                    showToast("please enter valid email","short");
-                    break;
-                } else if (driverCityEt.length()==0){
+                }  else if (driverCityEt.length()==0){
                     showToast("please enter city","short");
                     break;
                 }
-               email = driverEmailEt.getText().toString();
                mcity = driverCityEt.getText().toString();
 
                 if (isConnected()) {
-                    Log.d("response","lat: "+lattitude+" long: "+longitude+" name: "+name+" email: "+email+" mcity: "+mcity);
-                    addCarDriverRequest();
+                    Log.d("response","lat: "+lattitude+" long: "+longitude+" name: "+name+" mcity: "+mcity);
+                    addAccessoryRequest();
 
                 } else {
                     networkConnectionFailed();
