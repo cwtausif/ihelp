@@ -52,7 +52,9 @@ import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 import glowingsoft.com.ihelp.R;
-
+/*
+IHelp project
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //region Variables
     TextView forgotPass;
