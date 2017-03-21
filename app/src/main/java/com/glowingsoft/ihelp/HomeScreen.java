@@ -44,10 +44,16 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         addCarDriver = (Button) findViewById(R.id.add_car_driver);
         addAccessory = (Button) findViewById(R.id.add_accessories);
         homeLayout = (LinearLayout) findViewById(R.id.layout_home);
+        meNamTextview = (TextView) findViewById(R.id.me_name_textview);
+        logoutBtn = (Button) findViewById(R.id.logoutBtn);
 
 
         mContext = HomeScreen.this;
         showLog("response ApiKey", retrivePreferencesValues("apiKey") + "");
+        setSharedPreferences("categoryId","");
+        setSharedPreferences("categorytitle","All");
+
+
         arrayListTutorCategories = new ArrayList<>();
         arrayListUsers = new ArrayList<>();
         tutorsData = new ArrayList<>();
@@ -76,6 +82,7 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         layoutHome = (LinearLayout) findViewById(R.id.layout_home);
         taxiLayout = (LinearLayout) findViewById(R.id.taxi_layout);
         accessoriesLayout = (LinearLayout) findViewById(R.id.accessories_layout);
+        buttonCategoryTutors = (Button) findViewById(R.id.button_category_tutors);
 
         //region reference of me
 
@@ -95,7 +102,8 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         addCarRepair.setOnClickListener(this);
         addCarDriver.setOnClickListener(this);
         addAccessory.setOnClickListener(this);
-
+        logoutBtn.setOnClickListener(this);
+        buttonCategoryTutors.setOnClickListener(this);
         //endregion
 
 

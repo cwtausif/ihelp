@@ -50,10 +50,17 @@ public class TutorsAdapter extends BaseAdapter {
         View view = layoutInflater.inflate(R.layout.tutor_row,null);
         TextView title = (TextView) view.findViewById(R.id.name);
         ImageView tutorImage = (ImageView) view.findViewById(R.id.tutorImage);
+        TextView tutorCategory = (TextView) view.findViewById(R.id.tutorCategory);
         usersModel = new UsersModel();
         usersModel = usersData.get(position);
         title.setText(usersModel.getName()+"");
         Picasso.with(mContext).load("https://avatars.io/twitter/"+usersModel.getName()+"")  .transform(new CircleTransform()).into(tutorImage);
+
+        try{
+            tutorCategory.setText(usersModel.getCategoryTitle());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return view;
     }
 }

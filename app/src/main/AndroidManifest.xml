@@ -44,16 +44,22 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCG1_EfjVP4CTlW09FqZ-THfIhwerDpLI4" />
 
-        <activity android:name="com.glowingsoft.ihelp.RepairCarActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.glowingsoft.ihelp.TaxiActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.glowingsoft.ihelp.AddCarRepair"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name="com.glowingsoft.ihelp.AddCarDriver"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.glowingsoft.ihelp.AddAccessory"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.glowingsoft.ihelp.RepairCarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.glowingsoft.ihelp.TaxiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.glowingsoft.ihelp.AddCarRepair"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.glowingsoft.ihelp.AddCarDriver"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.glowingsoft.ihelp.AddAccessory"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.glowingsoft.ihelp.UserProfileActivity"></activity>
     </application>
 
 </manifest>

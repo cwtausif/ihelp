@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,6 +46,23 @@ public class SignupActivity extends MainActivity implements View.OnClickListener
         editTextName = (EditText) findViewById(R.id.name);
         mPb = (ProgressBar) findViewById(R.id.mPb);
         mRoot = (LinearLayout) findViewById(R.id.mRoot);
+        serviceTypeSignup = (Spinner) findViewById(R.id.serviceType);
+
+        serviceTypeSpinnerAdapter = new ArrayAdapter<>(mContext,android.R.layout.simple_spinner_item,serviceTypeService);
+        serviceTypeSignup.setAdapter(serviceTypeSpinnerAdapter);
+        serviceTypeSignup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                signupServiceType = position+1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         //region listenr
         loginBtnJoin.setOnClickListener(this);
         signupBtn.setOnClickListener(this);

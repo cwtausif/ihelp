@@ -19,7 +19,7 @@ public class SplashActivity extends MainActivity {
                     // Thread will sleep for 5 seconds
                     sleep(3 * 1000);
                     if (isLoggedIn()) {
-                        startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+                        startActivity(new Intent(getApplicationContext(), UserProfileActivity.class));
                         finish();
                     }
                     else {

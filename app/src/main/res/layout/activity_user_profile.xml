@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<LinearLayout
+    android:id="@+id/header"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/picProfile"
+        android:src="@drawable/images"
+        android:layout_width="@dimen/picProfile"
+        android:layout_height="@dimen/picProfile" />
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_toRightOf="@+id/picProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+    <ProgressBar
+        android:id="@+id/mPbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+    <EditText
+        android:id="@+id/description_et"
+        android:layout_below="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:lines="2"
+        android:hint="Description"
+        android:gravity="top"/>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_below="@+id/description_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_below="@+id/description_et"
+        android:layout_toRightOf="@+id/imageView"
+        android:text="Location"
+        android:padding="15dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/location_et"
+        android:layout_below="@+id/description_et"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+    android:id="@+id/imageView2"
+    android:layout_below="@+id/imageView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:text="Website"
+        android:layout_toRightOf="@+id/imageView2"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/website_et"
+        android:layout_below="@+id/location_et"
+        android:layout_toRightOf="@id/textView3"
+        android:hint="Website"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"/>
+    <ImageView
+        android:id="@+id/imageGithup"
+        android:layout_below="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textGit"
+        android:layout_below="@+id/textView3"
+        android:text="Githup    "
+        android:layout_toRightOf="@+id/imageGithup"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/github_et"
+        android:layout_below="@+id/website_et"
+        android:layout_toRightOf="@+id/textGit"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/imageLinked"
+        android:layout_below="@+id/imageGithup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textLinked"
+        android:layout_below="@+id/textGit"
+        android:text="Linkedln "
+        android:layout_toRightOf="@+id/imageLinked"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/linkedin_et"
+        android:layout_below="@+id/github_et"
+        android:layout_toRightOf="@+id/textLinked"
+        android:layout_marginTop="15dp"
+        android:hint="Linkedln"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/imageTwitter"
+        android:layout_below="@+id/imageLinked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textTwitter"
+        android:layout_below="@+id/textLinked"
+        android:text="Twitter    "
+        android:layout_toRightOf="@+id/imageTwitter"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/twitter_et"
+        android:layout_below="@+id/linkedin_et"
+        android:layout_toRightOf="@+id/textTwitter"
+        android:layout_marginTop="15dp"
+        android:hint="Twitter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/Savebtn"
+        android:layout_below="@+id/textTwitter"
+        android:layout_marginLeft="60dp"
+        android:text="Save Profile"
+        android:layout_marginTop="10sp"
+        android:padding="10sp"
+        android:background="#00FF00"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+</ScrollView>

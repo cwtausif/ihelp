@@ -59,12 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //region Variables
     TextView forgotPass;
     String[] accessoryTypeService = new String[]{"Laptop/Pc","Mobile Phones"};
+    String[] serviceTypeService = new String[]{"Tutor","Car Repairer","Accessory Repairer","Taxi Driver"};
     protected GoogleMap googleMap,googleMapRepair,googleMapDriverTaxi,googleMapAccessoryRepairer;
-    EditText editTextEmail, editTextPassword,editTextName,carReapirNameEt,carDriverNameEt,driverEmailEt,driverCityEt;
+    EditText editTextEmail, editTextPassword,editTextName,carReapirNameEt,carDriverNameEt,driverEmailEt,driverCityEt,descriptionEt,locationEt,websiteEt,githubEt,linkedinEt,twitterEt;
     String carReapirName,mcity;
     public static final int WEBVIEW_REQUEST_CODE = 100;
     protected boolean mReqFlag = true;
-    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory;
+    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory,logoutBtn,buttonCategoryTutors;
     Intent intent;
     Context mContext;
     static public String lengthShort = "short";
@@ -72,22 +73,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String signupType ="normal",social_id="";
     protected HashMap<String, String> mHashMap;
     SharedPreferences mPref;
-    ArrayAdapter<String> accessoryTypeSpinnerAdapter;
+    ArrayAdapter<String> accessoryTypeSpinnerAdapter,serviceTypeSpinnerAdapter;
     SharedPreferences.Editor mPrefEditor;
     public static final String mPrefName = "ihelpData";
     private String TAG = "MainActivity";
     ProgressBar mPb;
     ArrayAdapter adapterCategories;
     LinearLayout mRoot;
-    protected  String name, age, note, email, password;
+    protected  String name, age, note, email, password,website,github,linkedin,twitter,locationAddress;
     String avatar, apiKey, user_id,checkStatusLogin;
-    int requestType,accessoryType=0;
+    int requestType,accessoryType=0,signupServiceType=1;
     LocationManager manager;
     int requestGpsEnabled = 3;
     LinearLayout layoutMap, layoutHome;
-    TextView textViewHome,textViewTaxi,textViewRepairCar,textViewAccessories,textViewMe;
+    TextView textViewHome,textViewTaxi,textViewRepairCar,textViewAccessories,textViewMe,meNamTextview,textViewName;
     ArrayList<TutorCategoriesModel> arrayListTutorCategories;
-    Spinner spinnerTutorCategories,accessoryTypeSpinner;
+    Spinner spinnerTutorCategories,accessoryTypeSpinner,serviceTypeSignup;
     ArrayList<UsersModel> tutorsData,allCarsData,allDriversData,allaccessoryRepairs;
     UsersModel usersModel;
     ListView listViewTutors;
@@ -189,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }catch (Exception e){
             e.printStackTrace();
         }
+
+
     }
     public void setSharedPreferences(String key, String value) {
         mPref = getSharedPreferences(mPrefName, Context.MODE_PRIVATE);
@@ -198,6 +201,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     //endregion
     //region Requests
+    protected void userProfileRequest() {
+        Log.d("response","userProfileRequest()");
+        RequestParams mParams = new RequestParams();
+        mParams.add("id",retrivePreferencesValues("userId"));
+        requestType = 10;
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.get(mContext, "user", mParams, new MyTextHttpResponseHandler());
+    }
+
     protected void loginRequest() {
         RequestParams mParams = new RequestParams();
         mParams.add("email",email);
@@ -207,6 +219,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     protected void tutorCategoriesRequest() {
         RequestParams mParams = new RequestParams();
+        mParams.add("categoryId",retrivePreferencesValues("categoryId"));
+        try {
+            if (retrivePreferencesValues("categorytitle") != "" && retrivePreferencesValues("categorytitle").length()> 0) {
+                buttonCategoryTutors.setText(retrivePreferencesValues("categorytitle"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         requestType = 3;
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.get(mContext, "tutorscat", mParams, new MyTextHttpResponseHandler());
@@ -219,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mParams.put("name", name);
             mParams.put("email", email);
             mParams.put("password",password);
+            mParams.put("user_type",signupServiceType+"");
 
             mHashMap = new HashMap<>();
             mHashMap.put("location",address);
@@ -331,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id != R.id.add_car_repair && id !=R.id.add_car_driver && id != R.id.add_accessories) {
+        if (id != R.id.add_car_repair && id !=R.id.add_car_driver && id != R.id.add_accessories && id != R.id.logoutBtn && id != R.id.button_category_tutors) {
             if (isConnected()) {
                 homeLayout.setVisibility(View.GONE);
                 carRepairLayout.setVisibility(View.GONE);
@@ -361,6 +382,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         switch (id){
+            case R.id.button_category_tutors:
+                Log.d("response","button_category_tutors pressed");
+                //Initialize the Alert Dialog
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(mContext);
+                builderSingle.setTitle("Select One Tutor Category:-");
+
+                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext, android.R.layout.select_dialog_singlechoice,arraysport);
+
+                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String strName = arrayAdapter.getItem(which);
+                        Log.d("response strName",strName+"");
+                        buttonCategoryTutors.setText(strName);
+                        TutorCategoriesModel sportsActivityTitle = arrayListTutorCategories.get(which);
+                        Log.d("response imp",sportsActivityTitle.getId()+" "+sportsActivityTitle.getTitle());
+                        setSharedPreferences("categoryId",sportsActivityTitle.getId());
+                        setSharedPreferences("categorytitle",strName);
+                        tutorCategoriesRequest();
+                    }
+                });
+                builderSingle.show();
+                break;
+            case R.id.logoutBtn:
+                Log.d("response logout","logout button pressed");
+                setSharedPreferences("apiKey", "");
+                setSharedPreferences("email", "");
+                Intent intentl = new Intent(mContext,LoginActivity.class);
+                startActivity(intentl);
+                finish();
+                break;
             case R.id.add_accessories:
                 Intent accessoryIntent = new Intent(mContext,AddAccessory.class);
                 startActivity(accessoryIntent);
@@ -412,10 +471,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layoutMe.setVisibility(View.VISIBLE);
                 textViewMe.setBackgroundColor(Color.parseColor("#2ca5d2"));
                 textViewMe.setTextColor(Color.parseColor("#ffffff"));
+                setMeProfileValues();
                 break;
 
         }
     }
+
+    private void setMeProfileValues() {
+        meNamTextview.setText(retrivePreferencesValues("name"));
+    }
+
     class MyTextHttpResponseHandler extends JsonHttpResponseHandler {
         MyTextHttpResponseHandler() {
         }
@@ -424,14 +489,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onStart() {
             super.onStart();
             mReqFlag = false;
-            mPb.setVisibility(View.VISIBLE);
+            if (mPb != null) {
+                mPb.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         public void onFinish() {
             super.onFinish();
             mReqFlag = true;
-            mPb.setVisibility(View.INVISIBLE);
+            if (mPb != null) {
+                mPb.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
@@ -477,6 +546,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                           case 9:
                               allAccessoryRepairsResponse(mResponse);
                               break;
+                          case 10:
+                              userProfileRequestResponse(mResponse);
+                              break;
                       }
             } else {
                 showToast(mResponse.getString("message"),"short");
@@ -487,6 +559,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 GlobalClass.getInstance().snakbar(mRoot, "Request is Success But Empty Data", R.color.white, R.color.error);
             }
         }
+    }
+
+    private void userProfileRequestResponse(JSONObject mResponse) {
+        Log.d("response",mResponse.toString());
+        try{
+            String error = mResponse.getString("error");
+            if (error.equals("false")){
+
+                JSONArray userArray = mResponse.getJSONArray("user");
+                Log.d("response","userArray"+userArray);
+                JSONObject userInfo = userArray.getJSONObject(0);
+                Log.d("response","userInfo"+userInfo);
+                textViewName.setText(userInfo.getString("name"));
+                description = userInfo.getString("description");
+                locationAddress = userInfo.getString("city")+" "+userInfo.getString("country");
+                website = userInfo.getString("website");
+                github = userInfo.getString("github");
+                linkedin = userInfo.getString("linkedin");
+                twitter = userInfo.getString("twitter");
+
+                if (description != null && description != ""){
+                    descriptionEt.setText(description);
+                }
+
+                if (website != null && website != ""){
+                    websiteEt.setText(website);
+                }
+
+                if (description != null && description != ""){
+                    descriptionEt.setText(description);
+                }
+
+                if (description != null && description != ""){
+                    descriptionEt.setText(description);
+                }
+
+
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void addAccessoryResponse(JSONObject mResponse) {
@@ -519,7 +634,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             googleMapRepair.clear();
                             googleMapRepair.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         }
-                        usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
+                        usersModel = new UsersModel("",longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
                         usersModel.toString();
                         allCarsData.add(usersModel);
                     }
@@ -547,7 +662,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             googleMapDriverTaxi.clear();
                             googleMapDriverTaxi.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         }
-                        usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
+                        usersModel = new UsersModel("",longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
                         usersModel.toString();
                         allDriversData.add(usersModel);
                     }
@@ -586,7 +701,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void loginOrSignup(JSONObject mResponse) {
         try {
-            Log.d("response", mResponse.toString() + "");
+            Log.d("response login", mResponse.toString() + "");
             user_id = mResponse.getString("id");
             apiKey = mResponse.getString("apiKey");
 
@@ -602,7 +717,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setSharedPreferences("avatar", avatar);
             setSharedPreferences("userId", user_id);
             showToast(mResponse.getString("message"), "long");
-            startActivity(new Intent(MainActivity.this, HomeScreen.class));
+            startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
+
             finish();
         }catch (Exception e){
             e.printStackTrace();
@@ -616,6 +732,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 JSONArray jsonArrayCategories = mResponse.getJSONArray("categories");
                 JSONArray jsonArrayUsers = mResponse.getJSONArray("tutors");
                 if (jsonArrayCategories != null && jsonArrayCategories.length() != 0) {
+                    arrayListTutorCategories.clear();
                     for (int i = 0; i < jsonArrayCategories.length(); i++) {
                         TutorCategoriesModel sportsActivityTitle = new TutorCategoriesModel(jsonArrayCategories.getJSONObject(i).getString("title"), jsonArrayCategories.getJSONObject(i).getString("id"));
                         arrayListTutorCategories.add(sportsActivityTitle);
@@ -627,6 +744,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 if (jsonArrayUsers != null && jsonArrayUsers.length() != 0) {
+                    tutorsData.clear();
                     for (int i = 0; i < jsonArrayUsers.length(); i++) {
                        double lat = jsonArrayUsers.getJSONObject(i).getDouble("latitude");
                        double longi  = jsonArrayUsers.getJSONObject(i).getDouble("longitude");
@@ -637,7 +755,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             googleMap.clear();
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
                         }
-                        usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
+                        usersModel = new UsersModel(jsonArrayUsers.getJSONObject(i).getString("categoryTitle"),longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
                         usersModel.toString();
                         tutorsData.add(usersModel);
                     }
@@ -684,7 +802,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             googleMapAccessoryRepairer.clear();
                             googleMapAccessoryRepairer.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         }
-                        usersModel = new UsersModel(longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
+                        usersModel = new UsersModel("",longi,lat,jsonArrayUsers.getJSONObject(i).getString("name"), jsonArrayUsers.getJSONObject(i).getString("id"));
                         usersModel.toString();
                         allaccessoryRepairs.add(usersModel);
                     }

@@ -5,4 +5,5 @@
     <dimen name="size18">16dp</dimen>
     <dimen name="size22">22dp</dimen>
     <dimen name="size15">15dp</dimen>
+    <dimen name="picProfile">160sp</dimen>
 </resources>

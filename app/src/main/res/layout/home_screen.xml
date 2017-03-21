@@ -35,19 +35,28 @@
                 android:background="#2ca5d2"
                 android:gravity="center">
 
+                <Button
+                    android:text="All"
+                    android:textColor="@color/white"
+                    android:id="@+id/button_category_tutors"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="#2ca5d2"
+                    android:layout_weight="0.7"
+                    android:spinnerMode="dropdown" />
                 <Spinner
+                    android:visibility="gone"
                     android:id="@+id/spinner_category_tutors"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/shape_dropdown_blue_bg"
                     android:padding="5dp"
                     android:layout_weight="0.5"
-
                     android:spinnerMode="dropdown" />
                 <ProgressBar
                     android:id="@+id/mPb"
-                    android:layout_weight="0.5"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="0.3"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -215,6 +224,14 @@
             android:background="@color/error"
             android:layout_width="match_parent"
             android:layout_height="300sp">
+            <Button
+                android:id="@+id/logoutBtn"
+                android:layout_margin="10dp"
+                android:text="Logout"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <ImageView
                 android:id="@+id/me_profile_image"
                 android:layout_centerHorizontal="true"
@@ -225,7 +242,7 @@
                 android:layout_height="150sp" />
             <TextView
                 android:id="@+id/me_name_textview"
-                android:textSize="35sp"
+                android:textSize="25sp"
                 android:layout_below="@+id/me_profile_image"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
@@ -252,7 +269,7 @@
             android:id="@+id/textView_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.17"
+            android:layout_weight="0.33"
             android:background="#2ca5d2"
             android:gravity="center"
             android:text="@string/tutoring"
@@ -262,7 +279,7 @@
             android:id="@+id/textView_car"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
+            android:layout_weight="0.33"
             android:background="#ebe9ea"
             android:gravity="center"
             android:text="@string/repaircar"
@@ -272,7 +289,7 @@
             android:id="@+id/textView_my_taxi"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.18"
+            android:layout_weight="0.33"
             android:background="#ebe9ea"
             android:gravity="center"
             android:text="@string/taxi"
@@ -282,12 +299,13 @@
             android:id="@+id/textView_accessories"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.22"
+            android:layout_weight="0.33"
             android:background="#ebe9ea"
             android:gravity="center"
             android:text="Accessories"
             android:textColor="#454545" />
         <TextView
+            android:visibility="gone"
             android:id="@+id/textView_me"
             android:layout_width="0dp"
             android:layout_height="match_parent"

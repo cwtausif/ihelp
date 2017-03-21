@@ -26,12 +26,22 @@ public class UsersModel {
 
     double latitude;
     double longitude;
+    String categoryTitle;
 
-    public UsersModel(double longitude, double latitude, String name, String id) {
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
+    public void setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
+    }
+
+    public UsersModel(String categoryTitle, double longitude, double latitude, String name, String id) {
         this.name = name;
         this.id = id;
         this.longitude = longitude;
         this.latitude =latitude;
+        this.categoryTitle = categoryTitle;
     }
 
     public UsersModel() {
