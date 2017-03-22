@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String carReapirName,mcity;
     public static final int WEBVIEW_REQUEST_CODE = 100;
     protected boolean mReqFlag = true;
-    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory,logoutBtn,buttonCategoryTutors;
+    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory,logoutBtn,buttonCategoryTutors,homeBtn,saveBtn;
     Intent intent;
     Context mContext;
     static public String lengthShort = "short";
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText editTextDescription;
     String address, city, state, country, postalCode, streetAddress;
     int PLACE_PICKER_REQUEST = 1;
-    ImageView imageViewShare;
+    ImageView imageViewShare,picProfile;
     String carRepairName;
 
 
@@ -208,6 +208,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         requestType = 10;
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.get(mContext, "user", mParams, new MyTextHttpResponseHandler());
+    }
+    protected void saveUserProfile(){
+        Log.d("response","saveUserProfile()");
+        RequestParams mParams = new RequestParams();
+        //mParams.add("id",retrivePreferencesValues("userId"));
+        mParams.add("description",description);
+        mParams.add("website",website);
+        mParams.add("linkedin",linkedin);
+        mParams.add("twitter",twitter);
+        mParams.add("github",github);
+
+        requestType = 11;
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.post(mContext, "updateprofile", mParams, new MyTextHttpResponseHandler());
     }
 
     protected void loginRequest() {
@@ -572,31 +586,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject userInfo = userArray.getJSONObject(0);
                 Log.d("response","userInfo"+userInfo);
                 textViewName.setText(userInfo.getString("name"));
-                description = userInfo.getString("description");
+                try {
+                    description = userInfo.getString("description");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 locationAddress = userInfo.getString("city")+" "+userInfo.getString("country");
                 website = userInfo.getString("website");
                 github = userInfo.getString("github");
                 linkedin = userInfo.getString("linkedin");
                 twitter = userInfo.getString("twitter");
 
-                if (description != null && description != ""){
+                if (description != null && description != "" && description.equals("null")  == false){
                     descriptionEt.setText(description);
                 }
 
-                if (website != null && website != ""){
+                if (website != null && website != "" && website.equals("null")  == false){
                     websiteEt.setText(website);
                 }
 
-                if (description != null && description != ""){
-                    descriptionEt.setText(description);
+                if (github != null && github != "" && github.equals("null")  == false){
+                    githubEt.setText(github);
                 }
 
-                if (description != null && description != ""){
-                    descriptionEt.setText(description);
+                if (linkedin != null && linkedin != "" && linkedin.equals("null")  == false){
+                    linkedinEt.setText(linkedin);
                 }
 
+                if (twitter != null && twitter != "" && twitter.equals("null")  == false){
+                    twitterEt.setText(twitter);
+                }
 
-
+                if (locationAddress != null && locationAddress != "" && locationAddress.equals("null")  == false){
+                    locationEt.setText(locationAddress);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();

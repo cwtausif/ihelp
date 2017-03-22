@@ -1,6 +1,7 @@
 package com.glowingsoft.ihelp.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class TutorsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.tutor_row,null);
         TextView title = (TextView) view.findViewById(R.id.name);
         ImageView tutorImage = (ImageView) view.findViewById(R.id.tutorImage);
@@ -61,6 +62,14 @@ public class TutorsAdapter extends BaseAdapter {
         }catch (Exception e){
             e.printStackTrace();
         }
+        view.setTag(position);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = (int) v.getTag();
+                Log.d("response position",pos+"");
+            }
+        });
         return view;
     }
 }
