@@ -27,7 +27,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.glowingsoft.ihelp.adapters.ReviewsAdapter;
 import com.glowingsoft.ihelp.adapters.TutorsAdapter;
+import com.glowingsoft.ihelp.models.ReviewsModel;
 import com.glowingsoft.ihelp.models.TutorCategoriesModel;
 import com.glowingsoft.ihelp.models.UsersModel;
 import com.glowingsoft.ihelp.utils.GlobalClass;
@@ -57,6 +59,8 @@ IHelp project
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //region Variables
+    ReviewsAdapter reviewsAdapter;
+    ReviewsModel reviewsModel;
     TextView forgotPass;
     String[] accessoryTypeService = new String[]{"Laptop/Pc","Mobile Phones"};
     String[] serviceTypeService = new String[]{"Tutor","Car Repairer","Accessory Repairer","Taxi Driver"};
@@ -88,10 +92,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout layoutMap, layoutHome;
     TextView textViewHome,textViewTaxi,textViewRepairCar,textViewAccessories,textViewMe,meNamTextview,textViewName;
     ArrayList<TutorCategoriesModel> arrayListTutorCategories;
+    ArrayList<ReviewsModel> reviewsData;
     Spinner spinnerTutorCategories,accessoryTypeSpinner,serviceTypeSignup;
     ArrayList<UsersModel> tutorsData,allCarsData,allDriversData,allaccessoryRepairs;
     UsersModel usersModel;
-    ListView listViewTutors;
+    ListView listViewTutors,reviewsListView;
     TutorsAdapter tutorsAdapter;
     boolean firstRequst = true;
     LinearLayout carRepairLayout,homeLayout,taxiLayout,accessoriesLayout, layoutMe;

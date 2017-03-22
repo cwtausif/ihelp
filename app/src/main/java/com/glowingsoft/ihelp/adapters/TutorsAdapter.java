@@ -1,6 +1,7 @@
 package com.glowingsoft.ihelp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glowingsoft.ihelp.CircleTransform;
+import com.glowingsoft.ihelp.ReviewsAndRatingsActivity;
 import com.glowingsoft.ihelp.models.UsersModel;
 import com.squareup.picasso.Picasso;
 
@@ -68,6 +70,9 @@ public class TutorsAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int pos = (int) v.getTag();
                 Log.d("response position",pos+"");
+                Intent intent = new Intent(mContext, ReviewsAndRatingsActivity.class);
+                intent.putExtra("user_id",usersData.get(pos).getId());
+                mContext.startActivity(intent);
             }
         });
         return view;
