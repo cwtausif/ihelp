@@ -83,6 +83,7 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         taxiLayout = (LinearLayout) findViewById(R.id.taxi_layout);
         accessoriesLayout = (LinearLayout) findViewById(R.id.accessories_layout);
         buttonCategoryTutors = (Button) findViewById(R.id.button_category_tutors);
+        buttonDistanceTutors = (Button) findViewById(R.id.button_range_tutors);
 
         //region reference of me
 
@@ -104,6 +105,7 @@ public class HomeScreen extends MainActivity implements Spinner.OnItemSelectedLi
         addAccessory.setOnClickListener(this);
         logoutBtn.setOnClickListener(this);
         buttonCategoryTutors.setOnClickListener(this);
+        buttonDistanceTutors.setOnClickListener(this);
         //endregion
 
 

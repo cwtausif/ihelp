@@ -9,6 +9,6 @@
     <dimen name="rating">32sp</dimen>
     <dimen name="ratingpadding">3sp</dimen>
     <dimen name="totalReviewssize">16sp</dimen>
-    <dimen name="picProfileRating">120sp</dimen>
+    <dimen name="picProfileRating">80sp</dimen>
     <dimen name="reviewText">20sp</dimen>
 </resources>

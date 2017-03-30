@@ -44,6 +44,15 @@
                     android:background="#2ca5d2"
                     android:layout_weight="0.7"
                     android:spinnerMode="dropdown" />
+                <Button
+                    android:text="All"
+                    android:textColor="@color/white"
+                    android:id="@+id/button_range_tutors"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="#2ca5d2"
+                    android:layout_weight="0.7"
+                    android:spinnerMode="dropdown" />
                 <Spinner
                     android:visibility="gone"
                     android:id="@+id/spinner_category_tutors"

@@ -12,6 +12,7 @@
     <color name="red">#c40c03</color>
     <color name="yellow">#ffee7e</color>
     <color name="magenta">#ff459f</color>
+    <color name="greyLight">#f7f7f7</color>
 
 
 </resources>

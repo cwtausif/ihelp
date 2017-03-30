@@ -2,6 +2,7 @@ package com.glowingsoft.ihelp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,17 +61,19 @@ IHelp project
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //region Variables
+    RatingBar ratingBar;
+    Dialog rankDialog;
     ReviewsAdapter reviewsAdapter;
     ReviewsModel reviewsModel;
-    TextView forgotPass;
+    TextView forgotPass,totalRatings,oneTv,twoTv,threeTv,fourTv,fiveTv;
     String[] accessoryTypeService = new String[]{"Laptop/Pc","Mobile Phones"};
     String[] serviceTypeService = new String[]{"Tutor","Car Repairer","Accessory Repairer","Taxi Driver"};
     protected GoogleMap googleMap,googleMapRepair,googleMapDriverTaxi,googleMapAccessoryRepairer;
     EditText editTextEmail, editTextPassword,editTextName,carReapirNameEt,carDriverNameEt,driverEmailEt,driverCityEt,descriptionEt,locationEt,websiteEt,githubEt,linkedinEt,twitterEt;
-    String carReapirName,mcity;
+    String carReapirName,mcity,reviewText;
     public static final int WEBVIEW_REQUEST_CODE = 100;
     protected boolean mReqFlag = true;
-    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory,logoutBtn,buttonCategoryTutors,homeBtn,saveBtn;
+    Button loginBtnJoin,signupBtn,addCarRepair,addCarDriver,addAccessory,logoutBtn,buttonDistanceTutors,buttonCategoryTutors,homeBtn,saveBtn,addReviewBtn,paymentBtn;
     Intent intent;
     Context mContext;
     static public String lengthShort = "short";
@@ -86,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout mRoot;
     protected  String name, age, note, email, password,website,github,linkedin,twitter,locationAddress;
     String avatar, apiKey, user_id,checkStatusLogin;
-    int requestType,accessoryType=0,signupServiceType=1;
+    int requestType,accessoryType=0,signupServiceType=1,userRating;
     LocationManager manager;
     int requestGpsEnabled = 3;
     LinearLayout layoutMap, layoutHome;
-    TextView textViewHome,textViewTaxi,textViewRepairCar,textViewAccessories,textViewMe,meNamTextview,textViewName;
+    TextView textViewHome,textViewTaxi,textViewRepairCar,textViewAccessories,textViewMe,meNamTextview,textViewName,ratingsTv;
     ArrayList<TutorCategoriesModel> arrayListTutorCategories;
     ArrayList<ReviewsModel> reviewsData;
     Spinner spinnerTutorCategories,accessoryTypeSpinner,serviceTypeSignup;
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     String[] arraysport;
+    String[] arrayRange = new String[]{"All","1 km","5 km","10 km","20 km","100 km"};
     String[] arrayActivity;
 
     //endregion
@@ -228,6 +233,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.post(mContext, "updateprofile", mParams, new MyTextHttpResponseHandler());
     }
+    protected void sendReviewToServer(){
+        Log.d("response","sendReviewToServer()");
+        RequestParams mParams = new RequestParams();
+        //mParams.add("id",retrivePreferencesValues("userId"));
+        mParams.add("update","0");
+        mParams.add("user_id",user_id);
+        mParams.add("review",reviewText);
+        mParams.add("rating",userRating+"");
+        requestType = 12;
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.post(mContext, "adduserrating", mParams, new MyTextHttpResponseHandler());
+    }
+
 
     protected void loginRequest() {
         RequestParams mParams = new RequestParams();
@@ -239,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void tutorCategoriesRequest() {
         RequestParams mParams = new RequestParams();
         mParams.add("categoryId",retrivePreferencesValues("categoryId"));
+        mParams.add("tutorsRange",retrivePreferencesValues("tutorsRange"));
         try {
             if (retrivePreferencesValues("categorytitle") != "" && retrivePreferencesValues("categorytitle").length()> 0) {
                 buttonCategoryTutors.setText(retrivePreferencesValues("categorytitle"));
@@ -246,10 +265,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        try {
+            if (retrivePreferencesValues("tutorsRange") != "" && retrivePreferencesValues("tutorsRange").length()> 0) {
+                if (retrivePreferencesValues("tutorsRange").equals("All")){
+                    buttonDistanceTutors.setText(retrivePreferencesValues("tutorsRange"));
+                }else {
+                    buttonDistanceTutors.setText(retrivePreferencesValues("tutorsRange") + " km");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
         requestType = 3;
+        Log.d("response params",mParams.toString());
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.get(mContext, "tutorscat", mParams, new MyTextHttpResponseHandler());
     }
+    
     protected void reqSignup() {
         if (mReqFlag) {
             RequestParams mParams = new RequestParams();
@@ -366,12 +402,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
         WebReq.get(mContext, "allaccessoryrepairs", mParams, new MyTextHttpResponseHandler());
     }
+    public void getAllUserReviews() {
+        Log.d("response","getAllUserReviews()");
+        RequestParams mParams = new RequestParams();
+        mParams.add("userId",user_id);
+        requestType = 13;
+        reviewsData.clear();
+        WebReq.client.addHeader("Authorizuser",retrivePreferencesValues("apiKey"));
+        WebReq.get(mContext, "alluserreviews", mParams, new MyTextHttpResponseHandler());
+    }
     //endregion
     @Override
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id != R.id.add_car_repair && id !=R.id.add_car_driver && id != R.id.add_accessories && id != R.id.logoutBtn && id != R.id.button_category_tutors) {
+        if (id != R.id.button_range_tutors && id != R.id.add_car_repair && id !=R.id.add_car_driver && id != R.id.add_accessories && id != R.id.logoutBtn && id != R.id.button_category_tutors) {
             if (isConnected()) {
                 homeLayout.setVisibility(View.GONE);
                 carRepairLayout.setVisibility(View.GONE);
@@ -401,6 +446,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         switch (id){
+            case R.id.button_range_tutors:
+                Log.d("response","button_category_tutors pressed");
+                //Initialize the Alert Dialog
+                AlertDialog.Builder builderRange = new AlertDialog.Builder(mContext);
+                builderRange.setTitle("Select One Tutor Range:-");
+
+                final ArrayAdapter<String> arrayAdapterRange = new ArrayAdapter<>(mContext, android.R.layout.select_dialog_singlechoice,arrayRange);
+
+                builderRange.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+                builderRange.setAdapter(arrayAdapterRange, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        String strName = arrayAdapterRange.getItem(position);
+                        Log.d("response strName",strName+"");
+                        buttonDistanceTutors.setText(strName);
+                        switch (position){
+                            case 0:
+                                strName = "All";
+                                break;
+                            default:
+                                strName = strName.substring(0,strName.indexOf(" "));
+                                break;
+                        }
+                        setSharedPreferences("tutorsRange",strName);
+                        tutorCategoriesRequest();
+                    }
+                });
+                builderRange.show();
+                break;
             case R.id.button_category_tutors:
                 Log.d("response","button_category_tutors pressed");
                 //Initialize the Alert Dialog
@@ -535,11 +616,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, final JSONObject mResponse) {
-            mPb.setVisibility(View.INVISIBLE);
+            if (mPb!=null) {
+                mPb.setVisibility(View.INVISIBLE);
+            }
             Log.d("response",mResponse.toString()+"");
             try{
             if (mResponse.getString("error").equals("false")) {
-                Log.d("response",mResponse.toString()+"");
                       switch (requestType){
                           case 1:
                           case 2:
@@ -568,6 +650,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                           case 10:
                               userProfileRequestResponse(mResponse);
                               break;
+                          case 11:
+                              try {
+                                  showToast(mResponse.getString("message"),"short");
+                              } catch (JSONException e) {
+                                  e.printStackTrace();
+                              }
+                              break;
+                          case 12:
+                              getAllUserReviews();
+                              try {
+                                  showToast(mResponse.getString("message"),"short");
+                              } catch (JSONException e) {
+                                  e.printStackTrace();
+                              }
+                              break;
+                          case 13:
+                                getAllUserReviewsResponse(mResponse);
+                              break;
                       }
             } else {
                 showToast(mResponse.getString("message"),"short");
@@ -578,6 +678,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 GlobalClass.getInstance().snakbar(mRoot, "Request is Success But Empty Data", R.color.white, R.color.error);
             }
         }
+    }
+
+    private void getAllUserReviewsResponse(JSONObject mResponse) {
+
+        JSONArray reviews = new JSONArray();
+        try{
+            reviews = mResponse.getJSONArray("reviews");
+            float theRating = 0;
+            int countOne = 0,countTwo=0,countThree=0,countFour=0,countFive=0;
+            for (int i=0; i<reviews.length(); i++){
+                reviewsModel = new ReviewsModel();
+                JSONObject eachReview = reviews.getJSONObject(i);
+                reviewsModel.setReview_id(eachReview.getString("review_id"));
+                reviewsModel.setName(eachReview.getString("name"));
+                reviewsModel.setReview(eachReview.getString("review"));
+                reviewsModel.setRating(eachReview.getString("rate"));
+                reviewsData.add(reviewsModel);
+
+                int rev = Integer.parseInt(eachReview.getString("rate"));
+                if (rev==1){
+                    countOne = countOne + 1;
+                } else if (rev==2){
+                    countTwo = countTwo + 1;
+                }else if (rev==3){
+                    countThree = countThree + 1;
+                }else if (rev==4){
+                    countFour = countFour + 1;
+                }else {
+                    countFive = countFive + 1;
+                }
+            }
+            theRating = (5*countFive + 4*countFour + 3*countThree + 2*countTwo + 1*countOne) / (countFive+countFour+countThree+countTwo+countOne);
+
+            oneTv.setText(countOne+"");
+            twoTv.setText(countTwo+"");
+            threeTv.setText(countThree+"");
+            fourTv.setText(countFour+"");
+            fiveTv.setText(countFive+"");
+
+            reviewsAdapter.notifyDataSetChanged();
+            totalRatings.setText(reviewsData.size()+" Total");
+
+            try {
+                if (theRating>0) {
+                    ratingsTv.setText(theRating+"");
+                    ratingBar.setRating(theRating);
+                }else {
+                    ratingsTv.setText("0.0");
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void userProfileRequestResponse(JSONObject mResponse) {

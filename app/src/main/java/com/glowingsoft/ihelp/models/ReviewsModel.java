@@ -4,7 +4,30 @@ package com.glowingsoft.ihelp.models;
  * Created by mg on 3/23/2017.
  */
 public class ReviewsModel {
-    String name,image,date,rating;
+    String review_id;
+
+    public String getReview_id() {
+        return review_id;
+    }
+
+    public void setReview_id(String review_id) {
+        this.review_id = review_id;
+    }
+
+    String name;
+    String review;
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    String image;
+    String date;
+    String rating;
 
     public String getName() {
         return name;

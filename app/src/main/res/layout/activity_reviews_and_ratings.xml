@@ -6,15 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.glowingsoft.ihelp.ReviewsAndRatingsActivity">
-    <TextView
-        android:id="@+id/ratings"
-        android:textColor="@color/red"
-        android:padding="@dimen/ratingpadding"
-        android:textStyle="bold"
-        android:text="Ratings"
-        android:textSize="@dimen/rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/ratings"
+            android:textColor="@color/red"
+            android:padding="@dimen/ratingpadding"
+            android:textStyle="bold"
+            android:text="Ratings"
+            android:textSize="@dimen/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />   
+        <Button
+            android:text="Payment"
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:id="@+id/paymentBtn"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5sp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/rating"
+            />
+    </RelativeLayout>
+
     <LinearLayout
         android:weightSum="1"
         android:orientation="horizontal"
@@ -42,6 +57,7 @@
                 android:rating="4.5"
                 android:id="@+id/ratingBar" />
             <TextView
+                android:id="@+id/totalRatings"
                 android:textColor="@color/black"
                 android:text="23 total"
                 android:textSize="@dimen/totalReviewssize"
@@ -70,7 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="25"
+                    android:id="@+id/five_tv"
+                    android:text="0"
                     android:gravity="center_horizontal"
                     android:textColor="@color/white"
                     android:background="@color/red"
@@ -93,7 +110,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="25"
+                    android:id="@+id/four_tv"
+                    android:text="0"
                     android:gravity="center_horizontal"
                     android:textColor="@color/white"
                     android:background="@color/green"
@@ -116,7 +134,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:text="25"
+                android:id="@+id/three_tv"
+                android:text="0"
                 android:gravity="center_horizontal"
                 android:textColor="@color/white"
                 android:background="@color/yellow"
@@ -138,14 +157,16 @@
                 android:numStars="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
-                android:text="25"
-                android:gravity="center_horizontal"
-                android:textColor="@color/magenta"
-                android:background="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+
+                <TextView
+                    android:id="@+id/two_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:gravity="center_horizontal"
+                    android:text="0"
+                    android:textColor="@color/magenta" />
+            </LinearLayout>
             <LinearLayout
             android:padding="@dimen/ratingpadding"
             android:orientation="horizontal"
@@ -162,7 +183,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:text="25"
+                android:id="@+id/one_tv"
+                android:text="0"
                 android:gravity="center_horizontal"
                 android:textColor="@color/white"
                 android:background="@color/grey"
@@ -199,6 +221,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"/>
     <Button
+        android:id="@+id/addReview_btn"
         android:textColor="@color/white"
         android:text="Add Review"
         android:background="@color/red"

@@ -56,6 +56,8 @@
         <activity
             android:name="com.glowingsoft.ihelp.AddCarDriver"
             android:screenOrientation="portrait" />
+        <activity android:name="com.glowingsoft.ihelp.Payment"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.glowingsoft.ihelp.AddAccessory"
             android:screenOrientation="portrait" />
@@ -63,7 +65,7 @@
             android:name="com.glowingsoft.ihelp.UserProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name="com.glowingsoft.ihelp.ReviewsAndRatingsActivity"></activity>
+        <activity android:name="com.glowingsoft.ihelp.ReviewsAndRatingsActivity" />
     </application>
 
 </manifest>

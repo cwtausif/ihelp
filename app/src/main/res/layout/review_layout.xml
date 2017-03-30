@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/image"
         android:layout_centerVertical="true"
@@ -10,14 +12,18 @@
         android:layout_width="@dimen/picProfileRating"
         android:layout_height="@dimen/picProfileRating" />
     <LinearLayout
+        android:id="@+id/reviewLayout"
+        android:padding="5sp"
+        android:minWidth="200sp"
         android:layout_toRightOf="@id/image"
         android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
             android:text="Donald Trump"
             android:id="@+id/name"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
@@ -41,9 +47,20 @@
         <TextView
             android:layout_below="@id/rateBar"
             android:layout_toRightOf="@+id/image"
-            android:text="31, March 17 5:00 PM"
+            android:text="23, March 17 5:00 PM"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
+    <Button
+        android:id="@+id/editReview"
+        android:visibility="gone"
+        android:text="Edit"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:layout_margin="3sp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="30sp" />
 </RelativeLayout>
